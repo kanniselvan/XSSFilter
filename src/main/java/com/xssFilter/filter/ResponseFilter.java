@@ -36,11 +36,9 @@ public class ResponseFilter  implements Filter {
 
         System.out.println("Response output: " + requestWrapper.getBody());
         if(!StringUtils.isEmpty(requestWrapper.getBody())) {
-            Map<String, String> map = objectMapper.readValue(requestWrapper.getBody(), Map.class);
 
-            System.out.println("Response Map: " + map);
             // XSS:  Post Body data validation
-            if (XSSValidationUtils.isValidParam(map)) {
+            if (XSSValidationUtils.isValidURLPattern(requestWrapper.getBody())) {
 
                 filterChain.doFilter(requestWrapper, servletResponse);
             } else {

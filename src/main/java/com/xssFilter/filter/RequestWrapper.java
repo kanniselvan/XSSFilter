@@ -1,18 +1,19 @@
 package com.xssFilter.filter;
 
 import com.xssFilter.utils.XSSValidationUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
+import java.util.List;
 import java.util.regex.Matcher;
 
 
 public class RequestWrapper extends HttpServletRequestWrapper {
      private final String body;
-
 
 
      public RequestWrapper(HttpServletRequest request) throws IOException

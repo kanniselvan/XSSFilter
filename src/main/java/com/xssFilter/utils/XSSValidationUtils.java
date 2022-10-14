@@ -1,8 +1,6 @@
 package com.xssFilter.utils;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,31 +17,18 @@ public class XSSValidationUtils {
 
     public final Pattern pattern = Pattern.compile("^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?\\s]*$", Pattern.CASE_INSENSITIVE);
 
-     public boolean isValidParam(Map<String, String>  body){
 
-          AtomicBoolean flag= new AtomicBoolean(false);
-         body.entrySet().forEach(map->{
-                 String val=String.valueOf(map.getValue());
-             System.out.println("value:"+val);
-             Matcher matcher = pattern.matcher(val);
-             if (!matcher.matches()) {
-                 System.out.println("Invalid char found!!!!!");
-                 flag.set(true);
-             }else{
-                 System.out.println("valid char found: "+val);
-             }
-         });
-         return !flag.get();
-
-     }
-
-    public static boolean isValidURL(String uri) {
+    public static boolean isValidURL(String uri, List<String> skipWords) {
         AtomicBoolean flag= new AtomicBoolean(false);
          String[]  urls=uri.split("\\/");
 
         Arrays.stream(urls).filter(e->!StringUtils.isEmpty(e)).forEach(url->{
             String val=String.valueOf(url);
             System.out.println("value:"+val);
+            if(skipWords.stream().anyMatch(val::equalsIgnoreCase)){
+                System.out.println("bad char found!!!!!");
+                flag.set(true);
+            }
             Matcher matcher = pattern.matcher(val);
             if (!matcher.matches()) {
                 System.out.println("Invalid char found!!!!!");
@@ -55,7 +40,7 @@ public class XSSValidationUtils {
         return !flag.get();
     }
 
-    public static boolean isValidURLPattern(String uri) {
+    public static boolean isValidURLPattern(String uri, List<String> skipWords) {
         AtomicBoolean flag= new AtomicBoolean(false);
         String[]  urls=uri.split("\\/");
 
@@ -65,6 +50,10 @@ public class XSSValidationUtils {
             System.out.println("Map; "+mapping);
             mapping.forEach((key,value)->{
              //   System.out.println("key  "+key+"  value:"+value);
+                if(skipWords.stream().anyMatch(String.valueOf(value)::equalsIgnoreCase)){
+                    System.out.println("bad char found!!!!!");
+                    flag.set(true);
+                }
                 Matcher matcher = pattern.matcher(String.valueOf(value));
                 if (!matcher.matches()) {
                     System.out.println(key+"  : Invalid char found!!!!!");

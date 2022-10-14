@@ -3,3 +3,5 @@ server:
 spring:
   application:
     name: XSSFilter
+
+skip_words: not good words,bad words,XXXX

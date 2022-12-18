@@ -13,7 +13,7 @@ public class XSSFilterController {
     }
 
     @GetMapping("/welcome")
-    public String welcome(@RequestParam String message){
+    public String welcome(@RequestParam String message,@RequestParam String message1){
         return message;
 
     }

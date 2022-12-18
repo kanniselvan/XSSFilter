@@ -4,4 +4,4 @@ spring:
   application:
     name: XSSFilter
 
-skip_words: not good words,bad words,XXXX
+skip_words: not good words,bad words,XXXX,<script,

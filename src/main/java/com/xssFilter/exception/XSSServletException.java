@@ -2,7 +2,7 @@ package com.xssFilter.exception;
 
 import javax.servlet.ServletException;
 
-public class XSSServletException extends ServletException {
+public class XSSServletException extends RuntimeException {
 
     public XSSServletException() {
     }

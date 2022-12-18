@@ -3,6 +3,7 @@ package com.xssFilter.filter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xssFilter.exception.ExceptionController;
+import com.xssFilter.exception.XSSServletException;
 import com.xssFilter.model.ErrorResponse;
 import com.xssFilter.utils.XSSValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +74,12 @@ public class ResponseFilter implements Filter {
             } else {
                 filterChain.doFilter(requestWrapper, servletResponse);
             }
-        } catch (Exception ex) {
+        } catch (XSSServletException ex) {
             servletResponse.getWriter().write(ex.getMessage());
             httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
+        }  catch (Exception ex) {
+            servletResponse.getWriter().write(ex.getMessage());
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         } finally {
             System.out.println("clean up");
         }

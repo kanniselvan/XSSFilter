@@ -27,7 +27,8 @@ public class XSSValidationUtils {
         Arrays.stream(urls).filter(e->!StringUtils.isEmpty(e)).forEach(url->{
             String val=String.valueOf(url);
             System.out.println("value:"+val);
-            if(skipWords.stream().anyMatch(val::equalsIgnoreCase)){
+           // if(skipWords.stream().anyMatch(val::equalsIgnoreCase)){
+                if(skipWords.stream().anyMatch(p->val.toLowerCase().contains(p.toLowerCase()))){
                 System.out.println("bad char found!!!!!");
                 flag.set(true);
             }

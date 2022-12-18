@@ -1,6 +1,7 @@
 package com.xssFilter.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.xssFilter.exception.XSSServletException;
 import com.xssFilter.model.ErrorResponse;
 import com.xssFilter.utils.XSSValidationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +67,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             try {
                 String response = XSSValidationUtils.convertObjectToJson(errorResponse);
 
-                throw new RuntimeException(response);
+                throw new XSSServletException(response);
             } catch (JsonProcessingException e) {
                 return false;
             }
